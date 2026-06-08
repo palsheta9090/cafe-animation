@@ -4,7 +4,7 @@ import { TableData } from './components/FloorPlan';
 import { ReservationModal, BookingData } from './components/ReservationModal';
 import { CustomerPage } from './components/CustomerPage';
 import { AdminDashboard } from './components/AdminDashboard';
-import { Shield } from 'lucide-react';
+import { Lock, User, ArrowLeft, Coffee } from 'lucide-react';
 
 // Default Tables Layout Configuration (as requested T1-T8)
 const DEFAULT_TABLES: TableData[] = [
@@ -23,10 +23,44 @@ export const App: React.FC = () => {
   const [bookings, setBookings] = useState<BookingData[]>([]);
   
   const [selectedTable, setSelectedTable] = useState<TableData | null>(null);
-  const [isAdminView, setIsAdminView] = useState(false);
   
+  // Custom router state
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('amora_admin_auth') === 'true';
+  });
+  
+  const [loginId, setLoginId] = useState('');
+  const [loginPass, setLoginPass] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   // Real-time synchronization channel
   const [channel] = useState(() => new BroadcastChannel('amora-realtime'));
+
+  // Sync window path state on back/forward navigation
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    
+    // Periodically poll path in case history.pushState is called
+    const interval = setInterval(() => {
+      if (window.location.pathname !== currentPath) {
+        setCurrentPath(window.location.pathname);
+      }
+    }, 100);
+
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      clearInterval(interval);
+    };
+  }, [currentPath]);
+
+  const navigateTo = (path: string) => {
+    window.history.pushState({}, '', path);
+    setCurrentPath(path);
+  };
 
   // Load state from local storage or defaults on startup
   useEffect(() => {
@@ -116,20 +150,128 @@ export const App: React.FC = () => {
     syncState(updatedTables, updatedBookings);
   };
 
+  // Admin portal authentication logic
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loginId === 'admin' && loginPass === 'admin@123') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('amora_admin_auth', 'true');
+      setLoginError('');
+      setLoginId('');
+      setLoginPass('');
+    } else {
+      setLoginError('Invalid Administrator credentials.');
+    }
+  };
+
+  // Check if current page is the admin path
+  const isAdminPath = currentPath === '/admin' || currentPath === '/admin/';
+
   return (
     <div className="w-full">
-      {isAdminView ? (
-        // Admin workspace dashboard view
-        <AdminDashboard
-          tables={tables}
-          bookings={bookings}
-          onAddTable={handleAddTable}
-          onDeleteTable={handleDeleteTable}
-          onUpdateTable={handleUpdateTable}
-          onUpdateBookingStatus={handleUpdateBookingStatus}
-          onDeleteBooking={handleDeleteBooking}
-          onClose={() => setIsAdminView(false)}
-        />
+      {isAdminPath ? (
+        isAuthenticated ? (
+          // Authenticated Admin Dashboard Workspace
+          <AdminDashboard
+            tables={tables}
+            bookings={bookings}
+            onAddTable={handleAddTable}
+            onDeleteTable={handleDeleteTable}
+            onUpdateTable={handleUpdateTable}
+            onUpdateBookingStatus={handleUpdateBookingStatus}
+            onDeleteBooking={handleDeleteBooking}
+            onClose={() => navigateTo('/')}
+          />
+        ) : (
+          // Luxury Admin Portal Login Panel
+          <div className="min-h-screen w-full flex items-center justify-center bg-[#0c0807] px-4 relative overflow-hidden">
+            {/* Ambient gold background glows */}
+            <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-[#d4b26f]/5 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#d4b26f]/5 rounded-full blur-3xl"></div>
+
+            <div className="w-full max-w-[420px] bg-[#160d0a] border border-[#2d1e18] rounded-2xl p-8 shadow-2xl relative z-10">
+              
+              {/* Portal Header */}
+              <div className="text-center space-y-3 mb-8">
+                <div className="inline-flex p-3 bg-[#d4b26f]/10 rounded-full text-[#d4b26f] mb-2">
+                  <Coffee size={32} />
+                </div>
+                <h2 className="font-headline-md text-3xl font-bold text-white tracking-widest uppercase">
+                  AMORA
+                </h2>
+                <p className="text-[10px] text-[#d4b26f] uppercase font-bold tracking-widest">
+                  Admin Portal Access
+                </p>
+              </div>
+
+              {/* Error display */}
+              {loginError && (
+                <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-lg text-red-200 text-xs font-semibold mb-6 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              {/* Form fields */}
+              <form onSubmit={handleLoginSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#9fa0a6] tracking-widest mb-1.5">
+                    Admin Username
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-[#9fa0a6]">
+                      <User size={16} />
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter admin ID"
+                      value={loginId}
+                      onChange={(e) => setLoginId(e.target.value)}
+                      className="w-full bg-[#1b110e] border border-[#2d1e18] focus:border-[#d4b26f] focus:ring-1 focus:ring-[#d4b26f] rounded-lg pl-10 pr-3 py-2.5 text-sm text-white focus:outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-[#9fa0a6] tracking-widest mb-1.5">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-[#9fa0a6]">
+                      <Lock size={16} />
+                    </span>
+                    <input
+                      type="password"
+                      required
+                      placeholder="Enter password"
+                      value={loginPass}
+                      onChange={(e) => setLoginPass(e.target.value)}
+                      className="w-full bg-[#1b110e] border border-[#2d1e18] focus:border-[#d4b26f] focus:ring-1 focus:ring-[#d4b26f] rounded-lg pl-10 pr-3 py-2.5 text-sm text-white focus:outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-[#d4b26f] text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white hover:scale-[1.01] transition-all shadow-lg shadow-[#d4b26f]/5"
+                >
+                  Authenticate
+                </button>
+              </form>
+
+              {/* Home button */}
+              <button
+                onClick={() => navigateTo('/')}
+                className="mt-6 w-full flex items-center justify-center gap-2 text-xs text-[#9fa0a6] hover:text-[#d4b26f] transition-colors"
+              >
+                <ArrowLeft size={14} />
+                <span>Return to Cafe Site</span>
+              </button>
+
+            </div>
+          </div>
+        )
       ) : (
         // Standard Customer landing view
         <>
@@ -143,16 +285,6 @@ export const App: React.FC = () => {
             onSelectTable={(table) => setSelectedTable(table)}
           />
 
-          {/* Floating Admin Button */}
-          <button
-            onClick={() => setIsAdminView(true)}
-            className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 bg-[#d4b26f] text-black font-bold rounded-full shadow-2xl hover:bg-white hover:scale-105 transition-all text-xs uppercase tracking-wider"
-            title="Open Admin Control Panel"
-          >
-            <Shield size={16} />
-            <span>Admin Dashboard</span>
-          </button>
-
           {/* Reservation Modal Popup */}
           <ReservationModal
             table={selectedTable}
@@ -164,3 +296,4 @@ export const App: React.FC = () => {
     </div>
   );
 };
+
