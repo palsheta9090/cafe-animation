@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amora Cafe | The Art of Slow Living</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#474551",
+                    "on-primary-fixed": "#2c102f",
+                    "surface-container": "#efeeea",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f2f0ed",
+                    "on-secondary-fixed": "#28142b",
+                    "primary-fixed": "#ffd6fc",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#494753",
+                    "tertiary": "#32313c",
+                    "tertiary-fixed-dim": "#c9c4d3",
+                    "secondary-fixed": "#fad8f9",
+                    "outline": "#7e747c",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#cfc3cc",
+                    "secondary-container": "#fad8f9",
+                    "primary-container": "#5d3d5e",
+                    "surface": "#fbf9f5",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e4e2de",
+                    "on-secondary-fixed-variant": "#573f58",
+                    "on-primary-fixed-variant": "#5c3c5d",
+                    "on-primary-container": "#d3aad1",
+                    "surface-dim": "#dbdad6",
+                    "secondary-fixed-dim": "#ddbddc",
+                    "secondary": "#705671",
+                    "inverse-primary": "#e3b9e1",
+                    "on-tertiary-container": "#bab5c4",
+                    "surface-container-highest": "#e4e2de",
+                    "primary": "#452746",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#755375",
+                    "on-surface": "#1b1c1a",
+                    "on-surface-variant": "#4d444b",
+                    "on-background": "#1b1c1a",
+                    "surface-bright": "#fbf9f5",
+                    "surface-container-low": "#f5f3ef",
+                    "on-secondary-container": "#765c77",
+                    "on-tertiary-fixed": "#1c1a25",
+                    "surface-container-high": "#eae8e4",
+                    "tertiary-fixed": "#e5e0ef",
+                    "inverse-surface": "#30312e",
+                    "background": "#fbf9f5",
+                    "primary-fixed-dim": "#e3b9e1",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "margin-mobile": "20px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "label-md": ["DM Sans"],
+                    "headline-xl": ["Playfair Display"],
+                    "headline-xl-mobile": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-lg": ["DM Sans"],
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["DM Sans"],
+                    "label-sm": ["DM Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(201, 196, 211, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(93, 61, 94, 0.2);
+        }
+    </style>
+  </head>
+  <body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- Preloader Screen -->
+    <div id="loader" class="loader-overlay">
+      <div class="loader-content">
+        <div class="loader-bar-container">
+          <div id="loader-bar" class="loader-bar"></div>
+        </div>
+        <div id="loader-text" class="loader-text">0%</div>
+      </div>
+    </div>
+
+    <!-- Background Canvas -->
+    <canvas id="animation-canvas"></canvas>
+
+    <!-- Main Scroll Container for Animation -->
+    <div class="scroll-container">
+      <!-- Section 1: Hero Section -->
+      <section class="scroll-section" id="hero">
+        <div class="content hero-text-container">
+          <div class="text-backdrop-shadow mb-8">
+            <h1 class="hero-cafe-name">Amora</h1>
+            <p class="hero-cafe-subtitle">Coffee Is Here!!</p>
+          </div>
+          <div class="scroll-indicator">
+            <span class="mouse">
+              <span class="wheel"></span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Story Panel 1 -->
+      <section class="scroll-section" id="story-1"></section>
+
+      <!-- Section 3: Story Panel 2 -->
+      <section class="scroll-section" id="story-2"></section>
+
+      <!-- Section 4: Story Panel 3 -->
+      <section class="scroll-section" id="story-3"></section>
+
+      <!-- Section 5: Outro Section -->
+      <section class="scroll-section" id="story-4"></section>
+    </div>
+
+    <!-- Cafe Content Sections (added below the scroll container) -->
+    <div class="relative z-10 w-full shadow-2xl">
+      
+      <!-- Food Philosophy -->
+      <section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest overflow-hidden">
+        <div class="max-w-container-max mx-auto">
+          <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+            <div class="relative">
+              <div class="absolute -top-12 -left-12 w-64 h-64 bg-secondary-fixed-dim/30 rounded-full blur-3xl"></div>
+              <img class="rounded-xl shadow-2xl relative z-10 w-full aspect-[4/5] object-cover" alt="Organic ingredients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOcIe4wea3H3dMNEyJiNdf3RwD2ylmaWB2b9cgSn7Umf-dSIJhrV854oxbUE-jNTkFd3bJmj0wAlZ6vC4U1NpyaYMm_TYbePITPUlETl4ALlKzcSF5LW8vcGkaa2z4h7ousw5XonQ3Gi4SNbEMm6VAIi8Z7H96pn-Io1MpMAMk3KJ8NzN-iJF-Z5s6zvBmcaGSp57HzuFRzi9P06JKz8zUbmSI_uX9x4pbw7pz89SLPAQWnk7uFEx0iaijTLcAT4E5Lo5qdNTIUoY0"/>
+            </div>
+            <div class="space-y-8">
+              <div class="space-y-4">
+                <h2 class="font-headline-lg text-headline-xl-mobile md:text-headline-lg text-primary">Crafted with Love, <br/>Sourced from Nature</h2>
+                <div class="w-16 h-1 bg-primary-fixed-dim"></div>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                Every ingredient at Amora is chosen with a deep respect for its origin. We partner with local regenerative farmers to bring you organic produce that captures the essence of the season. 
+              </p>
+              <div class="grid grid-cols-2 gap-6 md:gap-8">
+                <div class="space-y-2">
+                  <span class="material-symbols-outlined text-primary">eco</span>
+                  <h3 class="font-label-md text-label-md text-primary uppercase">100% Organic</h3>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Pure, pesticide-free ingredients for your wellbeing.</p>
+                </div>
+                <div class="space-y-2">
+                  <span class="material-symbols-outlined text-primary">local_shipping</span>
+                  <h3 class="font-label-md text-label-md text-primary uppercase">Locally Sourced</h3>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Supporting our community within a 50-mile radius.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Famous Dishes Grid -->
+      <section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface overflow-hidden">
+        <div class="max-w-container-max mx-auto space-y-16">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
+            <div class="space-y-4">
+              <h2 class="font-headline-lg text-headline-xl-mobile md:text-headline-lg text-primary">The Signature Collection</h2>
+              <p class="font-body-md text-body-md text-on-surface-variant">A symphony of flavors designed to delight the senses.</p>
+            </div>
+            <!-- Slider Navigation Buttons -->
+            <div class="flex gap-2 shrink-0">
+              <button id="slider-prev" class="p-3 rounded-full border border-outline-variant text-primary hover:bg-primary hover:text-on-primary transition-all">
+                <span class="material-symbols-outlined pointer-events-none">arrow_back</span>
+              </button>
+              <button id="slider-next" class="p-3 rounded-full border border-outline-variant text-primary hover:bg-primary hover:text-on-primary transition-all">
+                <span class="material-symbols-outlined pointer-events-none">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Horizontal Scrollable Slider Container -->
+          <div id="product-slider" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 no-scrollbar">
+            
+            <!-- Dish 1 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Lavender Honey Toast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq0JAkjjAz4uvYiUyRb0WofTozRnwVJlqg25Ul7VwNdCt8WcHxwk4bU-75I5vCb8eS62oe9jV5oZhFz2r2f6QYsAvLY0ikOQjNcoHFV6Nvyh0SSRHHymX1lUSsdlKGWrycD6EGeuh3iS5ZE5i13fv1Hkv1W0e85nsT8YMO16NVtCezmFsmQ35rCzs9bKrRDoR6OVixk-hU3WrNb1WcgWSWiJOk5y-vb_vA-0-VpfmRtX48bYFB7Ny4k9A_dGmDogqq9kAMLeC3ZvoV"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Lavender Honey Toast</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹450</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Thick-cut artisanal brioche, wildflower honey, and organic lavender blossoms.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-[10px] uppercase font-bold tracking-tighter">Vegan Option</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 2 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Signature Violet Latte" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJismn3-US-niCwrNkH09APst5neNK5sDfN4-9X8SYHEZdsQxsCEo9syLt01eUUCnjXMM5NGPWmRwdneXIFrjxnVlO5f82xrdrpTTRHtKDkLr_ORRlXZSp4dmB-IdmrN_e3uMuxrAsJo6pTBJtr_Oc93N0uFNSGEAmecmHPO8RvgyAou80e-tHXHCzQ67oCZDnT05G1ybjq8egV-kcg20o77VTxqvNurMri_B-qvz0eX9XNuf9MXIr6q3y8Rm1Gmj6ov7MFas737FY"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Signature Violet Latte</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹280</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Our world-famous layered taro and lavender espresso masterpiece.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-[10px] uppercase font-bold tracking-tighter">Bestseller</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 3 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Rose and Pistachio Croissant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgX9OQXRRD33nMB8jeIwSDQ5KfWgW0nn9cRntUtxUB25bJMRsrWZfZG8_XHhP6Trllxsm3_sNQk1CqnydsdoTnLFIH1UIkjQyd_aGcECykIgrmj1aO6VWGrrzSdvll5fz8N2Refe8tFJb92RD3vKpRrRrCclRYVX0yIiuzp2soNITkVK27VsP9864V2mrjwXUEj1zBmO9VIsY92pMfxwZpKZby01QIKIg96hovaINSV8oER8mJWqvl2d5mxrbM_zKnH4La8EbOBt04"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Rose &amp; Pistachio</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹320</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Twice-baked butter croissant with Persian rose water and pistachio crème.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] uppercase font-bold tracking-tighter">Seasonal</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 4 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Cardamom Rose Latte" src="/products/cardamom_rose_latte.png"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Cardamom Rose Latte</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹240</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Creamy espresso infused with cardamom pods and organic rose water syrup.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-[10px] uppercase font-bold tracking-tighter">New</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 5 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Saffron Almond Cake" src="/products/saffron_almond_cake.png"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Saffron Almond Cake</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹290</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Moist tea cake infused with Kashmiri saffron, roasted almonds, and cardamoms.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-[10px] uppercase font-bold tracking-tighter">Chef's Special</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 6 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Mango Mint Elixir" src="/products/mango_mint_elixir.png"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Mango Mint Elixir</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹220</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Refreshing cold brew tea layered with Alphonso mango purée and fresh mint leaves.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] uppercase font-bold tracking-tighter">Refreshing</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dish 7 -->
+            <div class="snap-start shrink-0 w-[82vw] sm:w-[44vw] md:w-[31.5%] max-w-[380px] group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:-translate-y-2">
+              <div class="aspect-[3/4] overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Avocado Sourdough" src="/products/avocado_sourdough.png"/>
+              </div>
+              <div class="p-6 space-y-3">
+                <div class="flex justify-between items-start">
+                  <h3 class="font-headline-md text-headline-md text-primary">Avocado Sourdough</h3>
+                  <span class="font-label-md text-label-md text-secondary">₹380</span>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Toasted sourdough topped with fresh mashed Hass avocado, cherry tomatoes, and microgreens.</p>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full text-[10px] uppercase font-bold tracking-tighter">Organic</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Mood Banner -->
+      <section class="relative h-[450px] md:h-[614px] flex items-center justify-center overflow-hidden">
+        <img class="absolute inset-0 w-full h-full object-cover" alt="Cafe interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoiboEZLjOe9iuJmOHrhsZy-7sm3WCnhBFX8gHoYC6mYNpnjzU5JgfHFXYB-2cHYdrVSfR692-_7NRRMDAvq5PVcEE6DU1kAvlArSfBsn7q8vERC2YIIb4FBY7rH4A8sOge3hLNDgHaMRY3xMn9k5aOdC9OCIf8Zz5X7D6PTRBejzTimDE0eVvxujo6QBdUlfkzFmhlnLjFno9FvSLKmRG-Bdq7u_dttoFFC3mJ4UDZTnq3kUxiGgM2HG3N1nQZ4-0MeuQxuMYGgx4"/>
+        <div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px]"></div>
+        <div class="relative z-10 text-center space-y-6 px-margin-mobile">
+          <h2 class="font-headline-xl text-2xl md:text-headline-xl text-surface tracking-tight max-w-4xl mx-auto italic font-light px-4 leading-relaxed">
+            "A sanctuary where time stands still and flavors come alive."
+          </h2>
+        </div>
+      </section>
+
+      <!-- Customer Reviews -->
+      <section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface-container-low">
+        <div class="max-w-container-max mx-auto">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+            <div class="space-y-4">
+              <h2 class="font-headline-lg text-headline-xl-mobile md:text-headline-lg text-primary">From Our Guests</h2>
+              <p class="font-body-md text-body-md text-on-surface-variant">Kind words from our Amora community.</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="p-3 md:p-4 rounded-full border border-outline-variant text-primary hover:bg-primary hover:text-on-primary transition-all">
+                <span class="material-symbols-outlined">arrow_back</span>
+              </button>
+              <button class="p-3 md:p-4 rounded-full border border-outline-variant text-primary hover:bg-primary hover:text-on-primary transition-all">
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+          <div class="grid md:grid-cols-3 gap-gutter">
+            <!-- Testimonial 1 -->
+            <div class="glass-card p-8 rounded-xl border border-outline-variant/30 space-y-6">
+              <div class="flex text-primary">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface italic">"The most beautiful cafe I've ever visited. The Violet Latte is as delicious as it is stunning. Truly a slow-living dream."</p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-secondary-fixed"></div>
+                <div>
+                  <h4 class="font-label-md text-label-md text-primary">Elena Rodriguez</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Interior Designer</p>
+                </div>
+              </div>
+            </div>
+            <!-- Testimonial 2 -->
+            <div class="glass-card p-8 rounded-xl border border-outline-variant/30 space-y-6">
+              <div class="flex text-primary">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface italic">"You can taste the quality and the care in every bite. The Lavender Honey Toast is life-changing."</p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-primary-fixed"></div>
+                <div>
+                  <h4 class="font-label-md text-label-md text-primary">Marcus Thorne</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Food Critic</p>
+                </div>
+              </div>
+            </div>
+            <!-- Testimonial 3 -->
+            <div class="glass-card p-8 rounded-xl border border-outline-variant/30 space-y-6">
+              <div class="flex text-primary">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star</span>
+              </div>
+              <p class="font-body-md text-body-md text-on-surface italic">"A tranquil oasis in the middle of the city. Perfect for focused work or a quiet morning reflection."</p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-tertiary-fixed"></div>
+                <div>
+                  <h4 class="font-label-md text-label-md text-primary">Sarah Jenkins</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Author</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-surface-container-low dark:bg-surface-container-high border-t border-outline-variant/10">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8 max-w-container-max mx-auto">
+          <div class="text-center md:text-left space-y-4">
+            <span class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim">Amora</span>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">© 2024 Amora Cafe. Crafted for slow living.</p>
+          </div>
+          <div class="flex flex-wrap justify-center gap-8">
+            <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+            <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Instagram</a>
+            <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Facebook</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
