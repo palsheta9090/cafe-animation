@@ -9,7 +9,7 @@ export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ onLoaded }) =>
   const [percent, setPercent] = useState(0);
   const [loading, setLoading] = useState(true);
   
-  const totalFrames = 257;
+  const totalFrames = 220;
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(1);
   const targetFrameRef = useRef(1);
@@ -21,10 +21,13 @@ export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ onLoaded }) =>
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const requiredFrames = 15; // Only wait for the first 15 frames to show the page
     let loadedCount = 0;
+    let requiredLoadedCount = 0;
+    let loaderHidden = false;
     const images: HTMLImageElement[] = [];
 
-    // Preload all 257 images
+    // Preload all 220 images
     for (let i = 1; i <= totalFrames; i++) {
       const img = new Image();
       const paddedNum = String(i).padStart(3, '0');
@@ -32,21 +35,33 @@ export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ onLoaded }) =>
 
       img.onload = () => {
         loadedCount++;
-        const pct = Math.round((loadedCount / totalFrames) * 100);
-        setPercent(pct);
-        if (loadedCount === totalFrames) {
+        
+        if (i <= requiredFrames) {
+          requiredLoadedCount++;
+          const pct = Math.round((requiredLoadedCount / requiredFrames) * 100);
+          setPercent(pct);
+        }
+
+        if (requiredLoadedCount >= requiredFrames && !loaderHidden) {
+          loaderHidden = true;
           preloadedRef.current = true;
-          // Soft delay before removing loader
+          // Snappy delay to clear loader once critical frames are ready
           setTimeout(() => {
             setLoading(false);
             onLoaded();
-          }, 400);
+          }, 150);
         }
       };
 
       img.onerror = () => {
         loadedCount++;
-        if (loadedCount === totalFrames) {
+        if (i <= requiredFrames) {
+          requiredLoadedCount++;
+          const pct = Math.round((requiredLoadedCount / requiredFrames) * 100);
+          setPercent(pct);
+        }
+        if (requiredLoadedCount >= requiredFrames && !loaderHidden) {
+          loaderHidden = true;
           preloadedRef.current = true;
           setLoading(false);
           onLoaded();
